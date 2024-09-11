@@ -3,8 +3,14 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { getSession } from "@/lib/getSession";
 import NavBar from "@/components/navbar/NavBar";
+import { Poppins } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const poppins = Poppins({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-poppins",
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,14 +22,31 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = JSON.stringify(await getSession());
-
-  return (
-    <html lang="en">
-      <body className={inter.className}>
-        <NavBar session={session} />
-        {children}
-      </body>
-    </html>
-  );
+  const session = await getSession();
+  if (session?.user) {
+    return (
+      <html lang="en">
+        <body className={poppins.variable}>
+          <div className="h-screen bg-pips-200 bg-center">
+            <NavBar />
+            <img src="/images/background2.png" className="fixed bottom-0"></img>
+            {children}
+          </div>
+        </body>
+      </html>
+    );
+  } else {
+    return (
+      <html lang="en">
+        <body className={poppins.variable}>
+          <div
+            style={{ backgroundImage: `url(/images/background1.png)` }}
+            className="h-screen bg-cover bg-center"
+          >
+            {children}
+          </div>
+        </body>
+      </html>
+    );
+  }
 }
