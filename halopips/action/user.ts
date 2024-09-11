@@ -4,7 +4,7 @@ import connectDB from "@/lib/db";
 import { redirect } from "next/navigation";
 import { hash } from "bcryptjs";
 import { CredentialsSignin } from "next-auth";
-import { signIn } from "@/auth";
+import { signIn, signOut } from "@/auth";
 
 const login = async (formData: FormData) => {
   const email = formData.get("email") as string;
@@ -50,6 +50,13 @@ const register = async (formData: FormData) => {
   redirect("/login");
 };
 
-//logout tidak dibuat di sini karena signOut pada nextAuth bekerja pada client-side
+const logout = async () => {
+    if (!login) {
+        await signOut();
+    } else {
+        return false;
+    }
+}
 
-export { register, login };
+export {register, login, logout};
+
