@@ -1,8 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { Button } from '../button';
-import { signOut } from '@/auth';
 import { getSession } from '@/lib/getSession';
+import { logout } from '@/action/user';
 
 const NavBar = async () => {
   const session = await getSession();
@@ -41,10 +41,7 @@ const NavBar = async () => {
               </Link>
             </li>
             <li>
-              <form action={async () => {
-                "use server";
-                await signOut();
-              }}>
+              <form action={logout}>
                 <Button type="submit" variant={'ghost'} className='hover:text-green'>
                   Logout
                 </Button>
