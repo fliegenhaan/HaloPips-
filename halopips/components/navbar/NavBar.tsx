@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "../ui/button";
-import { logout } from "@/action/user";
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 import {
   Sheet,
@@ -87,11 +87,11 @@ const NavBar = ({ session }: Props) => {
                     </Button>
                   </Link>
                   <Button
-                    variant="ghost"
+                    variant={"ghost"}
                     className="w-full hover:bg-black hover:bg-opacity-20 text-pips-200 hover:text-pips-100"
-                    onClick={() => logout()}
+                    onClick={() => signOut()}
                   >
-                    Sign Out
+                    Logout
                   </Button>
                 </div>
               </SheetClose>
