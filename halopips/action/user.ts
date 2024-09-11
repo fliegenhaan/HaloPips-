@@ -1,10 +1,18 @@
 "use server";
-import { User } from "@/schema/User";
-import connectDB from "@/lib/db";
+import db from "@/lib/db";
+import {
+  doc,
+  getDocs,
+  setDoc,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
 import { redirect } from "next/navigation";
 import { hash } from "bcryptjs";
 import { CredentialsSignin } from "next-auth";
 import { signIn, signOut } from "@/auth";
+import { nanoid } from "nanoid";
 
 const login = async (formData: FormData) => {
   const email = formData.get("email") as string;
@@ -33,20 +41,25 @@ const register = async (formData: FormData) => {
   if (!firstName || !lastName || !email || !password) {
     throw new Error("Please fill all the fields");
   }
-
-  await connectDB();
-
   //existing user
-  const existingUser = await User.findOne({ email });
-
-  if (existingUser) {
+  const q = query(collection(db, "user"), where("email", "==", email));
+  const querySnapshot = await getDocs(q);
+  let count = 0;
+  querySnapshot.forEach((doc) => {
+    count += 1;
+  });
+  if (count) {
     throw new Error("User with this email is already exist");
   }
 
   const hashedPassword = await hash(password, 12);
-
-  await User.create({ firstName, lastName, email, password: hashedPassword });
-  console.log("User created successfully");
+  const id = nanoid();
+  await setDoc(doc(db, "user", id), {
+    firstName,
+    lastName,
+    email,
+    password: hashedPassword,
+  });
   redirect("/login");
 };
 
@@ -58,4 +71,8 @@ const logout = async () => {
   }
 };
 
-export { register, login, logout };
+const signInGoogle = async () => {
+  await signIn("google");
+};
+
+export { register, login, logout, signInGoogle };

@@ -3,7 +3,7 @@ import React from "react";
 import { getSession } from "@/lib/getSession";
 import FormLogin from "@/components/auth/FormLogin";
 import AuthNav from "@/components/auth/AuthNav";
-
+import Image from "next/image";
 const Login = async () => {
   const session = await getSession();
   const user = session?.user;
@@ -14,7 +14,7 @@ const Login = async () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-1/2 h-full fixed right-0 bg-[#F1EB99]">
-      <img src="/images/logo.png" className="h-40 w-40"></img>
+      <Image src="/images/logo.png" className="h-40 w-40" alt="logo"></Image>
       <FormLogin></FormLogin>
       <AuthNav page={"login"}></AuthNav>
     </div>

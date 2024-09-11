@@ -1,5 +1,5 @@
 "use client";
-
+import Image from "next/image";
 import React from "react";
 import { Button } from "../ui/button";
 import { signOut } from "next-auth/react";
@@ -13,6 +13,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { redirect } from "next/navigation";
 
 const NavBar = () => {
   return (
@@ -23,7 +24,7 @@ const NavBar = () => {
             variant="ghost"
             className="p-0 hover:bg-black hover:bg-opacity-20 "
           >
-            <img src="/images/Menu.png" alt="image" />
+            <Image src="/images/Menu.png" alt="image" />
           </Button>
         </SheetTrigger>
         <SheetContent
@@ -40,7 +41,6 @@ const NavBar = () => {
                   <Button
                     variant="ghost"
                     className="w-full hover:bg-black hover:bg-opacity-20 text-pips-200 hover:text-pips-100"
-                    onClick={() => console.log("clicked")}
                   >
                     Dashboard
                   </Button>
@@ -49,7 +49,6 @@ const NavBar = () => {
                   <Button
                     variant="ghost"
                     className="w-full hover:bg-black hover:bg-opacity-20 text-pips-200 hover:text-pips-100"
-                    onClick={() => console.log("clicked")}
                   >
                     Members
                   </Button>
@@ -58,7 +57,6 @@ const NavBar = () => {
                   <Button
                     variant="ghost"
                     className="w-full hover:bg-black hover:bg-opacity-20 text-pips-200 hover:text-pips-100"
-                    onClick={() => console.log("clicked")}
                   >
                     Chat
                   </Button>
@@ -67,7 +65,6 @@ const NavBar = () => {
                   <Button
                     variant="ghost"
                     className="w-full hover:bg-black hover:bg-opacity-20 text-pips-200 hover:text-pips-100"
-                    onClick={() => console.log("clicked")}
                   >
                     Profile
                   </Button>
@@ -76,7 +73,6 @@ const NavBar = () => {
                   <Button
                     variant="ghost"
                     className="w-full hover:bg-black hover:bg-opacity-20 text-pips-200 hover:text-pips-100"
-                    onClick={() => console.log("clicked")}
                   >
                     Settings
                   </Button>
@@ -84,7 +80,10 @@ const NavBar = () => {
                 <Button
                   variant={"ghost"}
                   className="w-full hover:bg-black hover:bg-opacity-20 text-pips-200 hover:text-pips-100"
-                  onClick={() => signOut()}
+                  onClick={() => {
+                    signOut();
+                    redirect("/");
+                  }}
                 >
                   Logout
                 </Button>

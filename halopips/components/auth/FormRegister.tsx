@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -63,7 +64,7 @@ const FormRegister = () => {
           </Button>
 
           <p className="text-pips-600 text-sm mt-2">
-            Already have an account?{" "}
+            Already have an account?
             <Link href="/login" className="text-pips-300">
               Log in
             </Link>

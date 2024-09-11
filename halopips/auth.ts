@@ -1,10 +1,10 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
-import connectDB from "./lib/db";
-import { User } from "@/schema/User";
 import { compare } from "bcryptjs";
-
+import { setDoc, doc } from "firebase/firestore";
+import db from "./lib/db";
+import { getUserByEmail } from "./data";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Google({
@@ -27,34 +27,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!email || !password) {
           throw new CredentialsSignin("Please provide both email & password");
         }
-
-        await connectDB();
-
-        const user = await User.findOne({ email }).select("+password +role");
-
-        if (!user) {
+        const user = await getUserByEmail(email);
+        if (!user || !user.data()) {
           throw new Error("Invalid email or password");
         }
-
-        if (!user.password) {
-          throw new Error("Invalid email or password");
-        }
-
-        const isMatched = await compare(password, user.password);
+        const isMatched = await compare(password, user.data().password);
 
         if (!isMatched) {
           throw new Error("Password did not matched");
         }
-
-        const userData = {
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          role: user.role,
-          id: user._id,
+        const userData = user.data(); // Get the plain object data
+        return {
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          role: userData.role,
+          id: user.id,
         };
-
-        return userData;
       },
     }),
   ],
@@ -67,17 +56,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token?.sub && token?.role) {
         session.user.id = token.sub;
-        session.user.role = token.role;
+        session.user.role = token.role as "user";
       }
 
       return session;
     },
 
     async jwt({ token, user }) {
+      if (!token.sub) return token;
       if (user) {
-        token.role = user.role;
+        token.role = "user";
       }
-
       return token;
     },
 
@@ -85,10 +74,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account?.provider === "google") {
         try {
           const { email, name, image, id } = user;
-          const alreadyUser = User.findOne({ email });
+          const alreadyUser = await getUserByEmail(email);
 
-          if (!alreadyUser) {
-            await User.create({ email, name, image, authProviderId: id });
+          if (!alreadyUser || !alreadyUser.data()) {
+            if (id) {
+              await setDoc(doc(db, "user", id), {
+                email,
+                name,
+                image,
+                authProviderId: id,
+              });
+            }
+            // await User.create({ email, name, image, authProviderId: id });
           } else {
             return true;
           }

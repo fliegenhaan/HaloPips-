@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { getSession } from "@/lib/getSession";
 import NavBar from "@/components/navbar/NavBar";
 import { Poppins } from "next/font/google";
+import Image from "next/image";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -29,7 +29,11 @@ export default async function RootLayout({
         <body className={poppins.variable}>
           <div className="h-screen bg-pips-200 bg-center">
             <NavBar />
-            <img src="/images/background2.png" className="fixed bottom-0"></img>
+            <Image
+              src="/images/background2.png"
+              className="fixed bottom-0"
+              alt="background"
+            ></Image>
             {children}
           </div>
         </body>

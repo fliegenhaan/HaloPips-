@@ -1,9 +1,9 @@
+"use client";
 import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { login } from "@/action/user";
-import { signIn } from "@/auth";
+import { login, signInGoogle } from "@/action/user";
 import { IconBrandGoogle } from "@tabler/icons-react";
 import { Button } from "../ui/button";
 
@@ -42,13 +42,7 @@ const FormLogin = () => {
         </Button>
       </form>
       <p className="text-pips-600">or</p>
-      <form
-        className="w-full m-0"
-        action={async () => {
-          "use server";
-          await signIn("google");
-        }}
-      >
+      <form className="w-full m-0" action={signInGoogle}>
         <Button
           variant="outline"
           type="submit"
@@ -58,7 +52,7 @@ const FormLogin = () => {
           <span className="text-inherit text-lg">Google</span>
         </Button>
         <p className="text-pips-600 text-sm mt-2">
-          Don't have an account?{" "}
+          Don`&apos;`t have an account?
           <Link href="/register" className="text-pips-300">
             Sign up
           </Link>
