@@ -51,12 +51,11 @@ const register = async (formData: FormData) => {
 };
 
 const logout = async () => {
-    if (!login) {
-        await signOut();
-    } else {
-        return false;
-    }
-}
+  if (!login) {
+    await signOut();
+  } else {
+    return false;
+  }
+};
 
-export {register, login, logout};
-
+export { register, login, logout };
