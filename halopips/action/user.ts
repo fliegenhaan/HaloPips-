@@ -148,6 +148,37 @@ const updatePassword = async (formData: FormData) => {
   }
 };
 
+const updateProfile = async (formData: FormData) => {
+  const updatedFullName = formData.get("fullName") as string;
+  const updatedNickName = formData.get("nickName") as string;
+  const updatedNim = formData.get("nim") as string;
+  const updatedFakultas = formData.get("fakultas") as string;
+  const updatedInstagram = formData.get("instagram") as string;
+  const updatedLinkedin = formData.get("linkedin") as string;
+  const updatedIdline = formData.get("idline") as string;
+
+  const session = await getSession();
+  const id = session?.user.id;
+
+  try {
+    const userDocRef = doc(db, "user", id);
+    await updateDoc(userDocRef, {
+      fullName: updatedFullName,
+      nickName: updatedNickName,
+      nim: updatedNim,
+      fakultas: updatedFakultas,
+      instagram: updatedInstagram,
+      linkedin: updatedLinkedin,
+      idline: updatedIdline,
+    });
+
+    return { success: true, message: "Profile updated successfully" };
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    throw new Error("Failed to update profile. Please try again.");
+  }
+};
+
 const logout = async () => {
   if (!login) {
     return false;
@@ -160,4 +191,4 @@ const signInGoogle = async () => {
   await signIn("google");
 };
 
-export { register, login, logout, signInGoogle, updateEmail, updatePassword };
+export { register, login, logout, signInGoogle, updateEmail, updatePassword, updateProfile };

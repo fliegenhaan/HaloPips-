@@ -36,7 +36,7 @@ const PasswordChangeForm = ({ initialPassword }: { initialPassword: string }) =>
           placeholder="************"
           type="password"
           name="oldpassword"
-          className="rounded-xl bg-white h-12 text-lg text-[#F1EB99]"
+          className="rounded-xl bg-white h-12 text-lg text-pips-500"
           required
         />
         <Label className="font-bold text-xl font-mono" htmlFor="newpassword">
@@ -47,7 +47,7 @@ const PasswordChangeForm = ({ initialPassword }: { initialPassword: string }) =>
           placeholder="************"
           type="password"
           name="newpassword"
-          className="rounded-xl bg-white h-12 text-lg text-[#F1EB99]"
+          className="rounded-xl bg-white h-12 text-lg text-pips-500"
           required
         />
         <Button type="submit" className="mt-4">Update Password</Button>
