@@ -69,21 +69,30 @@
 import { getSession } from "@/lib/getSession";
 import SettingsNavbar from "@/components/navbar/SettingsNavbar";
 import EmailChangeForm from "./EmailChangeForm";
+import db from "@/lib/db";
+import { getDoc, doc } from "firebase/firestore";
 
 const AccountSettingsPage = async () => {
   const session = await getSession();
-  const user = session?.user;
-
-  if (!user) {
+  const id = session?.user.id;
+  if (!id) {
     return;
   }
-
-  return (
-    <div className="flex flex-col items-start p-8 w-1/2 h-full fixed right-0 bg-[#F1EB99]">
-      <SettingsNavbar page="account" />
-      <EmailChangeForm initialEmail={user.email} />
-    </div>
-  );
+  const docRef = doc(db, "user", id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    const user = docSnap.data();
+    const email = user.email;
+    return (
+      <div className="flex flex-col items-start p-8 w-1/2 h-full fixed right-0 bg-[#F1EB99]">
+        <SettingsNavbar page="account" />
+        <EmailChangeForm initialEmail={email} />
+      </div>
+    );
+  } else {
+    console.log("No such document!");
+    return;
+  }
 };
 
 export default AccountSettingsPage;
