@@ -14,7 +14,13 @@ const Register = async () => {
 
   return (
     <div className="flex flex-col items-center justify-center w-1/2 h-full fixed right-0 bg-[#F1EB99]">
-      <Image src="/images/logo.png" className="h-40 w-40" alt="logo"></Image>
+      <Image
+        src="/images/logo.png"
+        className="h-40 w-40"
+        alt="logo"
+        width={160}
+        height={160}
+      ></Image>
       <FormRegister></FormRegister>
       <AuthNav page={"register"}></AuthNav>
     </div>

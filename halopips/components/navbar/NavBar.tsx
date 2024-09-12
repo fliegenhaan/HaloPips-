@@ -24,7 +24,7 @@ const NavBar = () => {
             variant="ghost"
             className="p-0 hover:bg-black hover:bg-opacity-20 "
           >
-            <Image src="/images/Menu.png" alt="image" />
+            <Image src="/images/Menu.png" alt="image" width={40} height={40} />
           </Button>
         </SheetTrigger>
         <SheetContent
