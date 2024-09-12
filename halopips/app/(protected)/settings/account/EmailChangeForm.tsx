@@ -1,4 +1,3 @@
-// app/account-settings/EmailChangeForm.tsx
 'use client';
 
 import { useState } from "react";

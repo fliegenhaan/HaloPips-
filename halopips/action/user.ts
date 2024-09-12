@@ -8,9 +8,10 @@ import {
   query,
   where,
   updateDoc,
+  getDoc,
 } from "firebase/firestore";
 import { redirect } from "next/navigation";
-import { hash } from "bcryptjs";
+import { compare, hash } from "bcryptjs";
 import { CredentialsSignin } from "next-auth";
 import { signIn, signOut } from "@/auth";
 import { nanoid } from "nanoid";
@@ -87,14 +88,14 @@ const updateEmail = async (formData: FormData) => {
   }
 
   const session = await getSession();
-  const user = session?.user;
+  const id = session?.user.id;
 
-  if (!user) {
+  if (!id) {
     throw new Error("No authenticated user found");
   }
 
   try {
-    const userDocRef = doc(db, "user", user.id);
+    const userDocRef = doc(db, "user", id);
     await updateDoc(userDocRef, {
       email: newEmail,
     });
@@ -108,7 +109,43 @@ const updateEmail = async (formData: FormData) => {
 
 
 const updatePassword = async (formData: FormData) => {
+  const inputOldPassword = formData.get("oldpassword") as string;
+  const newPassword = formData.get("newpassword") as string;
 
+  if (!newPassword || !inputOldPassword) {
+    throw new Error("Please fill the password field");
+  };
+
+  if (inputOldPassword === newPassword) {
+    throw new Error("Please enter a different password");
+  }
+
+  const session = await getSession();
+  const id = session?.user.id;
+
+  try {
+    const userDocRef = doc(db, "user", id);
+    const docSnap = await getDoc(userDocRef);
+    const userdata = docSnap.data()
+    const oldPassword = userdata.password;
+    const isMatched = await compare(inputOldPassword, oldPassword);
+
+    if (!isMatched) {
+      return {success: false, message: "Please input your current password correctly"};
+    } else {
+        const hashedPassword = await hash(newPassword, 12);
+
+        await updateDoc(userDocRef, {
+          password: hashedPassword,
+        });
+
+        return {success: true, message: "Password updated successfully"};
+    }
+
+  } catch (error) {
+    console.error("Error updating password:", error);
+    throw new Error("Failed to update password. Please try again.");
+  }
 };
 
 const logout = async () => {
