@@ -13,27 +13,24 @@ const FormRegister = () => {
       <h1 className="text-pips-600 font-bold text-4xl">Sign Up</h1>
       <ScrollArea className="w-full m-0 pr-3">
         <form className="w-full p-1" action={register}>
-          <Label
-            className="text-pips-600 font-bold text-xl"
-            htmlFor="firstname"
-          >
-            First Name
+          <Label className="text-pips-600 font-bold text-xl" htmlFor="fullname">
+            Full Name
           </Label>
           <Input
-            id="firstname"
+            id="fullname"
             placeholder="John"
             type="text"
-            name="firstname"
+            name="fullname"
             className="rounded-xl bg-pips-600 text-[#F1EB99] h-12 text-lg"
           />
-          <Label className="text-pips-600 font-bold text-xl" htmlFor="lastname">
-            Last Name
+          <Label className="text-pips-600 font-bold text-xl" htmlFor="nickname">
+            Nickname
           </Label>
           <Input
-            id="lastname"
+            id="nickname"
             placeholder="Doe"
             type="text"
-            name="lastname"
+            name="nickname"
             className="rounded-xl bg-pips-600 text-[#F1EB99] h-12 text-lg"
           />
           <Label className="text-pips-600 font-bold text-xl" htmlFor="email">
@@ -54,6 +51,26 @@ const FormRegister = () => {
             placeholder="**********"
             type="password"
             name="password"
+            className="rounded-xl bg-pips-600 text-[#F1EB99] h-12 text-lg"
+          />
+          <Label className="text-pips-600 font-bold text-xl" htmlFor="nim">
+            NIM
+          </Label>
+          <Input
+            id="nim"
+            placeholder="Your NIM"
+            type="text"
+            name="nim"
+            className="rounded-xl bg-pips-600 text-[#F1EB99] h-12 text-lg"
+          />
+          <Label className="text-pips-600 font-bold text-xl" htmlFor="fakultas">
+            Fakultas
+          </Label>
+          <Input
+            id="fakultas"
+            placeholder="Kedokteran"
+            type="text"
+            name="fakultas"
             className="rounded-xl bg-pips-600 text-[#F1EB99] h-12 text-lg"
           />
           <Button
