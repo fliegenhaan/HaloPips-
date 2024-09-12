@@ -33,12 +33,14 @@ const login = async (formData: FormData) => {
 };
 
 const register = async (formData: FormData) => {
-  const firstName = formData.get("firstname") as string;
-  const lastName = formData.get("lastname") as string;
+  const fullName = formData.get("fullname") as string;
+  const nickName = formData.get("nickname") as string;
   const email = formData.get("email") as string;
   const password = formData.get("password") as string;
+  const nim = formData.get("nim") as string;
+  const fakultas = formData.get("fakultas") as string;
 
-  if (!firstName || !lastName || !email || !password) {
+  if (!fullName || !nickName || !email || !password || !nim || !fakultas) {
     throw new Error("Please fill all the fields");
   }
   //existing user
@@ -55,10 +57,22 @@ const register = async (formData: FormData) => {
   const hashedPassword = await hash(password, 12);
   const id = nanoid();
   await setDoc(doc(db, "user", id), {
-    firstName,
-    lastName,
+    id,
+    fullName,
+    nickName,
     email,
     password: hashedPassword,
+    nim,
+    fakultas,
+    role: "tpb",
+    image: "",
+    isOnline: false,
+    lastOnline: "",
+    friend: [],
+    idline: "",
+    instagram: "",
+    linkedin: "",
+    verified: false,
   });
   redirect("/login");
 };
