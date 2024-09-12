@@ -63,11 +63,20 @@ const register = async (formData: FormData) => {
   redirect("/login");
 };
 
+const updateEmail = async (formData: FormData) => {
+  
+};
+
+
+const updatePassword = async (formData: FormData) => {
+
+};
+
 const logout = async () => {
   if (!login) {
-    await signOut();
-  } else {
     return false;
+  } else {
+    await signOut();
   }
 };
 
@@ -75,4 +84,4 @@ const signInGoogle = async () => {
   await signIn("google");
 };
 
-export { register, login, logout, signInGoogle };
+export { register, login, logout, signInGoogle, updateEmail, updatePassword };
