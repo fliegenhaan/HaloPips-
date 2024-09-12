@@ -7,12 +7,14 @@ import {
   collection,
   query,
   where,
+  updateDoc,
 } from "firebase/firestore";
 import { redirect } from "next/navigation";
 import { hash } from "bcryptjs";
 import { CredentialsSignin } from "next-auth";
 import { signIn, signOut } from "@/auth";
 import { nanoid } from "nanoid";
+import { getSession } from "@/lib/getSession";
 
 const login = async (formData: FormData) => {
   const email = formData.get("email") as string;
@@ -78,7 +80,30 @@ const register = async (formData: FormData) => {
 };
 
 const updateEmail = async (formData: FormData) => {
-  
+  const newEmail = formData.get("email") as string;
+
+  if (!newEmail) {
+    throw new Error("Please fill the email field");
+  }
+
+  const session = await getSession();
+  const user = session?.user;
+
+  if (!user) {
+    throw new Error("No authenticated user found");
+  }
+
+  try {
+    const userDocRef = doc(db, "user", user.id);
+    await updateDoc(userDocRef, {
+      email: newEmail,
+    });
+
+    return { success: true, message: "Email updated successfully" };
+  } catch (error) {
+    console.error("Error updating email:", error);
+    throw new Error("Failed to update email. Please try again.");
+  }
 };
 
 
