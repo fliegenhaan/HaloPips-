@@ -52,7 +52,7 @@ const FormLogin = () => {
           <span className="text-inherit text-lg">Google</span>
         </Button>
         <p className="text-pips-600 text-sm mt-2">
-          Don`&apos;`t have an account?
+          Don&apos;t have an account?
           <Link href="/register" className="text-pips-300">
             Sign up
           </Link>
