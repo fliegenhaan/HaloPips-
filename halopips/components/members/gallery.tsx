@@ -33,6 +33,7 @@ interface Props {
   image: string;
   angkatan: string;
   fallBack: string;
+  isOnline: boolean;
 }
 
 const frameworks = [
@@ -187,13 +188,16 @@ export default function GalleryGrid(data: { data: Props[] }) {
               className="relative w-20 h-20 flex justify-center items-center"
             >
               <Avatar
-                className="absolute w-full h-full hover:cursor-pointer hover:w-24 hover:h-24 transition-all"
+                className="absolute w-full h-full hover:cursor-pointer hover:w-24 hover:h-24 transition-all overflow-visible"
                 onClick={() => console.log(item.nickName)}
               >
                 <AvatarImage src={item.image} />
                 <AvatarFallback className="text-3xl font-semibold text-gray-500 opacity-70">
                   {item.fallBack}
                 </AvatarFallback>
+                {item.isOnline && (
+                  <div className="h-5 w-5 absolute border border-pips-400 bg-pips-300 rounded-full right-0 bottom-0"></div>
+                )}
               </Avatar>
             </Link>
             <Label className="font-semibold mt-3 text-pips-600">

@@ -13,6 +13,7 @@ interface Props {
   image: string;
   angkatan: string;
   fallBack: string;
+  isOnline: boolean;
 }
 
 async function getData(): Promise<Props[]> {
@@ -39,6 +40,7 @@ async function getData(): Promise<Props[]> {
       image: user.image,
       angkatan,
       fallBack: fallBack.toUpperCase(),
+      isOnline: user.isActive,
     });
   });
   return users;
