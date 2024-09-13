@@ -16,6 +16,7 @@ import { CredentialsSignin } from "next-auth";
 import { signIn, signOut } from "@/auth";
 import { nanoid } from "nanoid";
 import { getSession } from "@/lib/getSession";
+import { getStorage, ref, uploadBytes, getDownloadURL, StorageReference } from "firebase/storage";
 
 const login = async (formData: FormData) => {
   const email = formData.get("email") as string;
@@ -179,6 +180,37 @@ const updateProfile = async (formData: FormData) => {
   }
 };
 
+const uploadImage = async (formData: FormData) => {
+  const image = formData.get("photo") as File | null;
+
+  if (!image) {
+    throw new Error("Please select a photo to upload");
+  }
+
+  const session = await getSession();
+  const id = session?.user.id;
+
+  try {
+    const storageRef: StorageReference = ref(storage, `user_photos/${id}/${image.name}`);
+    await uploadBytes(storageRef, image);
+
+    const photoURL = await getDownloadURL(storageRef);
+
+    const userDocRef = doc(db, "user", id);
+    await updateDoc(userDocRef, {
+      image: photoURL,
+    });
+
+    return { success: true, message: "Photo uploaded successfully", photoURL };
+    
+  } catch (error) {
+    console.error("Error uploading photo:", error);
+    throw new Error("Failed to upload photo. Please try again.");
+  }
+
+
+}
+
 const logout = async () => {
   if (!login) {
     return false;
@@ -191,4 +223,4 @@ const signInGoogle = async () => {
   await signIn("google");
 };
 
-export { register, login, logout, signInGoogle, updateEmail, updatePassword, updateProfile };
+export { register, login, logout, signInGoogle, updateEmail, updatePassword, updateProfile, uploadImage };
