@@ -1,155 +1,91 @@
 "use client";
 import React from "react";
+import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons";
 import { useState } from "react";
-import { Input, Row, Col, Card, Pagination } from "antd";
-const { Search } = Input;
+import { Row, Col, Pagination } from "antd";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Label } from "../ui/label";
+import Link from "next/link";
+import { Input } from "../ui/input";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import Image from "next/image";
 
-const data = [
+interface Props {
+  id: string;
+  nickName: string;
+  nim: string;
+  jurusan: string;
+  jabatan: string;
+  image: string;
+  angkatan: string;
+  fallBack: string;
+}
+
+const frameworks = [
   {
-    id: "1",
-    name: "John Doe",
-    image: "/john.jpg",
-    description: "Software Engineer",
+    value: "",
+    label: "Show All",
   },
   {
-    id: "2",
-    name: "Jane Smith",
-    image: "/jane.jpg",
-    description: "Product Manager",
+    value: "2022",
+    label: "2022",
   },
   {
-    id: "3",
-    name: "Nathan",
-    image: "/john.jpg",
-    description: "Software Engineer",
+    value: "2021",
+    label: "2021",
   },
   {
-    id: "4",
-    name: "Theo",
-    image: "/jane.jpg",
-    description: "Product Manager",
+    value: "2020",
+    label: "2020",
   },
   {
-    id: "5",
-    name: "Brian",
-    image: "/john.jpg",
-    description: "Software Engineer",
-  },
-  {
-    id: "6",
-    name: "Tamin",
-    image: "/jane.jpg",
-    description: "Product Manager",
-  },
-  {
-    id: "7",
-    name: "Kurniadi",
-    image: "/john.jpg",
-    description: "Software Engineer",
-  },
-  {
-    id: "8",
-    name: "Tedja",
-    image: "/jane.jpg",
-    description: "Product Manager",
-  },
-  {
-    id: "9",
-    name: "Farrel",
-    image: "/john.jpg",
-    description: "Software Engineer",
-  },
-  {
-    id: "10",
-    name: "Otniel",
-    image: "/jane.jpg",
-    description: "Product Manager",
-  },
-  {
-    id: "11",
-    name: "Bimo",
-    image: "/john.jpg",
-    description: "Software Engineer",
-  },
-  {
-    id: "12",
-    name: "Rhio",
-    image: "/jane.jpg",
-    description: "Product Manager",
-  },
-  {
-    id: "13",
-    name: "Filbert",
-    image: "/john.jpg",
-    description: "Software Engineer",
-  },
-  {
-    id: "14",
-    name: "Naufy",
-    image: "/jane.jpg",
-    description: "Product Manager",
-  },
-  {
-    id: "15",
-    name: "Freddy",
-    image: "/john.jpg",
-    description: "Software Engineer",
-  },
-  {
-    id: "16",
-    name: "Riko",
-    image: "/jane.jpg",
-    description: "Product Manager",
-  },
-  {
-    id: "17",
-    name: "Kenneth",
-    image: "/john.jpg",
-    description: "Software Engineer",
-  },
-  {
-    id: "18",
-    name: "Jovan",
-    image: "/jane.jpg",
-    description: "Product Manager",
-  },
-  {
-    id: "19",
-    name: "Nelson",
-    image: "/john.jpg",
-    description: "Software Engineer",
-  },
-  {
-    id: "20",
-    name: "Benedict",
-    image: "/images/logo.png",
-    description: "Product Manager",
+    value: "2019",
+    label: "2019",
   },
 ];
 
-export default function GalleryGrid() {
-  const [filteredData, setFilteredData] = useState(data);
+export default function GalleryGrid(data: { data: Props[] }) {
+  const [filteredData, setFilteredData] = useState(data.data);
   const [currentPage, setCurrentPage] = useState(1);
-  const [pageSize, setPageSize] = useState(8); // Number of items per page
+  const [pageSize, setPageSize] = useState(16); // Number of items per page
 
   // Calculate the index for pagination slicing
   const startIndex = (currentPage - 1) * pageSize;
   const endIndex = startIndex + pageSize;
+  const [open, setOpen] = React.useState(false);
+  const [value, setValue] = React.useState("");
+
+  const handleFilter = (value: string) => {
+    const filtered = data.data.filter((item) =>
+      item.angkatan.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredData(filtered);
+    setCurrentPage(1);
+  };
 
   const handleSearch = (value: string) => {
     // Filter the data based on the search query
-    const filtered = data.filter(
+    const filtered = data.data.filter(
       (item) =>
-        item.name.toLowerCase().includes(value.toLowerCase()) ||
-        item.description.toLowerCase().includes(value.toLowerCase())
+        item.nickName.toLowerCase().includes(value.toLowerCase()) ||
+        item.nim.toLowerCase().includes(value.toLowerCase())
     );
     setFilteredData(filtered);
     setCurrentPage(1); // Reset to page 1 after filtering
-  };
-
-  const handleClick = (id: string) => {
-    console.log(`Clicked ID: ${id}`);
-    // Handle click event (e.g., navigate to detail page)
   };
 
   const handlePageChange = (page: number, pageSize: number) => {
@@ -159,24 +95,113 @@ export default function GalleryGrid() {
 
   return (
     <div>
-      {/* Search Input for Filtering */}
-      <Search
-        placeholder="Search by name or description"
-        onSearch={handleSearch}
-        style={{ width: 300, marginBottom: 20 }}
-      />
-
-      {/* Grid Layout */}
-      <Row gutter={[16, 16]}>
+      <div className="flex h-14 justify-center items-center">
+        <div className="flex mx-3 justify-center border border-pips-600 items-center p-2 w-full rounded-sm">
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                aria-expanded={open}
+                className="w-[200px] justify-between bg-pips-400 hover:bg-pips-500 border-none font-normal text-pips-200 hover:text-pips-300"
+              >
+                {value
+                  ? frameworks.find((framework) => framework.value === value)
+                      ?.label
+                  : "Filter by Angkatan"}
+                <CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0 border-none">
+              <Command className="bg-pips-400">
+                <CommandInput
+                  placeholder="Search angkatan..."
+                  className="h-9 text-pips-200"
+                />
+                <CommandList>
+                  <CommandEmpty className="text-pips-200 text-sm m-2">
+                    No framework found.
+                  </CommandEmpty>
+                  <CommandGroup className="bg-pips-400">
+                    {frameworks.map((framework) => (
+                      <CommandItem
+                        key={framework.value}
+                        value={framework.value}
+                        onSelect={(currentValue) => {
+                          setValue(currentValue === value ? "" : currentValue);
+                          setOpen(false);
+                          handleFilter(currentValue);
+                        }}
+                        className="text-pips-200"
+                      >
+                        {framework.label}
+                        <CheckIcon
+                          className={cn(
+                            "ml-auto h-4 w-4",
+                            value === framework.value
+                              ? "opacity-100"
+                              : "opacity-0"
+                          )}
+                        />
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                </CommandList>
+              </Command>
+            </PopoverContent>
+          </Popover>
+          <Input
+            id="search"
+            placeholder="Search by name/NIM"
+            type="text"
+            name="search"
+            onChange={(e) => handleSearch(e.target.value)}
+            className="mx-2 border-none bg-pips-400 text-pips-200"
+          />
+        </div>
+        <Link href="/chat">
+          <Button className="bg-pips-400 hover:bg-pips-500 text-xl rounded-sm text-pips-200 h-full">
+            Chat
+            <Image
+              src="/images/chat.png"
+              alt="chat"
+              width={20}
+              height={20}
+              className="ml-3"
+            ></Image>
+          </Button>
+        </Link>
+      </div>
+      <Row gutter={[16, 16]} className="m-5">
         {filteredData.slice(startIndex, endIndex).map((item) => (
-          <Col key={item.id} xs={24} sm={12} md={8} lg={6}>
-            <Card
-              hoverable
-              cover={<img alt={item.name} src={item.image} />}
-              onClick={() => handleClick(item.id)}
+          <Col
+            key={item.id}
+            xs={7}
+            sm={6}
+            md={4}
+            lg={3}
+            className="flex flex-col items-center"
+          >
+            <Link
+              href={"/profile/" + item.id}
+              className="relative w-20 h-20 flex justify-center items-center"
             >
-              <Card.Meta title={item.name} description={item.description} />
-            </Card>
+              <Avatar
+                className="absolute w-full h-full hover:cursor-pointer hover:w-24 hover:h-24 transition-all"
+                onClick={() => console.log(item.nickName)}
+              >
+                <AvatarImage src={item.image} />
+                <AvatarFallback className="text-3xl font-semibold text-gray-500 opacity-70">
+                  {item.fallBack}
+                </AvatarFallback>
+              </Avatar>
+            </Link>
+            <Label className="font-semibold mt-3 text-pips-600">
+              {item.angkatan}
+            </Label>
+            <Label className="font-semibold text-pips-600">
+              {item.nickName}
+            </Label>
           </Col>
         ))}
       </Row>
