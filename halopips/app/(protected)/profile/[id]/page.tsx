@@ -2,6 +2,9 @@ import React from "react";
 import BioData from "@/components/card/biodata";
 import { doc, getDoc } from "firebase/firestore";
 import db from "@/lib/db";
+import SendMessageRequest from "@/components/card/sendMessageRequest";
+import { getSession } from "@/lib/getSession";
+
 interface Props {
   id: string;
   fullName: string;
@@ -71,18 +74,29 @@ async function getData(id: string): Promise<Props> {
 }
 
 const Profile = async ({ params }: { params: { id: string } }) => {
-  const data = await getData(params.id);
-  if (data.id !== "") {
-    return (
-      <div className="flex h-full justify-between">
-        <div className="flex justify-center items-center w-1/2 border-r-4 border-pips-600">
-          <BioData data={data}></BioData>
+  const session = await getSession();
+  const userId = session?.user.id;
+  if (userId) {
+    const data = await getData(params.id);
+    if (data.id !== "") {
+      return (
+        <div className="flex h-full justify-between">
+          <div className="flex justify-center items-center w-1/2 border-r-4 border-pips-600">
+            <BioData data={data}></BioData>
+          </div>
+          <div className="flex justify-center items-center w-1/2">
+            <SendMessageRequest
+              sender={userId}
+              receiver={params.id}
+            ></SendMessageRequest>
+          </div>
         </div>
-        <div className="flex justify-center items-center w-1/2">asd</div>
-      </div>
-    );
+      );
+    } else {
+      return <div>User not found</div>;
+    }
   } else {
-    return <div>User not found</div>;
+    return <div>You are not logged in, session isnt created</div>;
   }
 };
 
