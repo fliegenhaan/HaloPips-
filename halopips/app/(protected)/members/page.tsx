@@ -1,7 +1,7 @@
 "use server";
 import React from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 import GalleryGrid from "@/components/members/gallery";
 
 interface Props {

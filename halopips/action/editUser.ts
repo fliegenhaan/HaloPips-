@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { doc, setDoc } from "firebase/firestore";
 import { hash } from "bcryptjs";
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 const formSchema = z.object({
   email: z.string().min(1, {
     message: "This field is required",

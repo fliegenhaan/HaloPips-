@@ -3,7 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
 import { compare } from "bcryptjs";
 import { setDoc, doc } from "firebase/firestore";
-import db from "./lib/db";
+import { db } from "./lib/db";
 import { getUserByEmail } from "./data";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [

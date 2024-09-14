@@ -1,5 +1,5 @@
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 
 export async function createChat(sender: string, receiver: string) {
   let sortList = [sender, receiver];

@@ -1,7 +1,7 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 
 interface MessagesProps {
   senderId: string;

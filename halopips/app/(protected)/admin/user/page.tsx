@@ -2,7 +2,7 @@
 import { Posts, columns } from "./columns";
 import { DataTable } from "./data-table";
 import React from "react";
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 import { collection, query, where, getDocs } from "firebase/firestore";
 import Link from "next/link";
 async function getData(): Promise<Posts[]> {

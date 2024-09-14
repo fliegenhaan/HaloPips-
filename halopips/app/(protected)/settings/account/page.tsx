@@ -1,7 +1,7 @@
 import { getSession } from "@/lib/getSession";
 import SettingsNavbar from "@/components/navbar/SettingsNavbar";
 import EmailChangeForm from "./EmailChangeForm";
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 import { getDoc, doc } from "firebase/firestore";
 import PasswordChangeForm from "./PasswordChangeForm";
 

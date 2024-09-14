@@ -1,4 +1,4 @@
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 import { getDoc, doc, updateDoc } from "firebase/firestore";
 import z from "zod";
 const formSchema = z.object({

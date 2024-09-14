@@ -1,5 +1,5 @@
 "use server";
-import db from "@/lib/db";
+import { db, storage } from "@/lib/db";
 import {
   doc,
   getDocs,
@@ -209,10 +209,7 @@ const uploadImage = async (formData: FormData) => {
   const id = session?.user.id;
   if (!id) throw new Error("Not signed in");
   try {
-    const storageRef: StorageReference = ref(
-      storage,
-      `user_photos/${id}/${image.name}`
-    );
+    const storageRef: StorageReference = ref(storage, `user_photos/${id}/ktm`);
     await uploadBytes(storageRef, image);
 
     const photoURL = await getDownloadURL(storageRef);

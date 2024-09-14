@@ -3,7 +3,7 @@ import BioData from "@/components/card/biodata";
 import { doc, getDoc } from "firebase/firestore";
 import { getSession } from "@/lib/getSession";
 
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 import SendMessageRequest from "@/components/card/sendMessageRequest";
 
 interface Props {

@@ -1,6 +1,6 @@
 "use server";
 import { collection, query, where, getDocs } from "firebase/firestore";
-import db from "./lib/db";
+import { db } from "./lib/db";
 export async function getUserByEmail(email: string | null | undefined) {
   if (!email) {
     return null;

@@ -1,6 +1,6 @@
 import React from "react";
 import { doc, getDoc } from "firebase/firestore";
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 import FormCreate from "@/components/admin/formEdit";
 
 const EditUser = async ({ params }: { params: { id: string } }) => {

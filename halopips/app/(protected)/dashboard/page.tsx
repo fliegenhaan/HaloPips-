@@ -45,7 +45,7 @@
 // };
 
 // export default Dashboard;
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 import { getSession } from "@/lib/getSession";
 import { doc, getDoc } from "firebase/firestore";
 import React from "react";
@@ -62,32 +62,53 @@ const Dashboard = async () => {
   if (docSnap.exists()) {
     const user = docSnap.data();
     const { fullName, nickName, nim, image } = user;
-    
+
     return (
       <div className="bg-pips-200 min-h-screen p-6">
-        <h1 className="text-pips-800 font-bold text-4xl mb-6">Selamat Datang,</h1>
+        <h1 className="text-pips-800 font-bold text-4xl mb-6">
+          Selamat Datang,
+        </h1>
         <div className="flex flex-row space-x-6">
           <div className="flex flex-col space-y-6 w-1/3">
-            <DashboardProfile fullName={fullName} nickName={nickName} nim={nim} image={image}/>
+            <DashboardProfile
+              fullName={fullName}
+              nickName={nickName}
+              nim={nim}
+              image={image}
+            />
             <div className="flex flex-col space-y-2">
-              <h2 className="text-pips-800 font-bold text-xl">Quick Messages</h2>
+              <h2 className="text-pips-800 font-bold text-xl">
+                Quick Messages
+              </h2>
               <div className="flex space-x-2">
-                <button className="bg-pips-600 text-white p-4 rounded-lg flex-1">Mahasiswa TPB</button>
-                <button className="bg-pips-600 text-white p-4 rounded-lg flex-1">Mahasiswa Non TPB</button>
+                <button className="bg-pips-600 text-white p-4 rounded-lg flex-1">
+                  Mahasiswa TPB
+                </button>
+                <button className="bg-pips-600 text-white p-4 rounded-lg flex-1">
+                  Mahasiswa Non TPB
+                </button>
               </div>
             </div>
           </div>
           <div className="flex flex-col w-2/3">
             <div className="flex items-center mb-4">
               <div className="bg-pips-400 w-4 h-10 mr-2"></div>
-              <h2 className="bg-pips-600 h-10 text-pips-100 text-xl font-bold py-1 px-2 flex-grow">Berita Terkini</h2>
+              <h2 className="bg-pips-600 h-10 text-pips-100 text-xl font-bold py-1 px-2 flex-grow">
+                Berita Terkini
+              </h2>
             </div>
             <div className="grid grid-cols-2 gap-4">
               {[...Array(6)].map((_, index) => (
                 <div key={index} className="bg-pips-600 rounded-xl p-4">
-                  <h3 className="font-bold text-lg text-pips-100 mb-2">Arak-arakan Wisuda</h3>
-                  <p className="text-sm text-white mb-2">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                  <p className="text-xs text-pips-200">Published on April 15, 2024</p>
+                  <h3 className="font-bold text-lg text-pips-100 mb-2">
+                    Arak-arakan Wisuda
+                  </h3>
+                  <p className="text-sm text-white mb-2">
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  </p>
+                  <p className="text-xs text-pips-200">
+                    Published on April 15, 2024
+                  </p>
                 </div>
               ))}
             </div>

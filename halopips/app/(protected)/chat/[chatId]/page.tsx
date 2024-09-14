@@ -1,7 +1,7 @@
 import React from "react";
 import { doc, getDoc } from "firebase/firestore";
 import { getSession } from "@/lib/getSession";
-import db from "@/lib/db";
+import { db } from "@/lib/db";
 import ChatNav from "@/components/chat/chatNav";
 import Close from "./close";
 import ChatRoom from "@/components/chat/chatRoom";
