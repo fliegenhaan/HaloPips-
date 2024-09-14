@@ -17,7 +17,6 @@ import { signIn, signOut } from "@/auth";
 import { nanoid } from "nanoid";
 import { getSession } from "@/lib/getSession";
 import {
-  getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
@@ -209,7 +208,7 @@ const uploadImage = async (formData: FormData) => {
   const id = session?.user.id;
   if (!id) throw new Error("Not signed in");
   try {
-    const storageRef: StorageReference = ref(storage, `user_photos/${id}/ktm`);
+    const storageRef: StorageReference = ref(storage, `user_photos/${id}/pfp`);
     await uploadBytes(storageRef, image);
 
     const photoURL = await getDownloadURL(storageRef);

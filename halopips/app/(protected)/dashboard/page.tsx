@@ -18,7 +18,7 @@ const Dashboard = async () => {
     const { fullName, nickName, nim, image } = user;
 
     return (
-      <div className="bg-pips-200 min-h-screen p-6">
+      <div className="h-full p-6">
         <h1 className="text-pips-800 font-bold text-4xl mb-6">
           Selamat Datang,
         </h1>
@@ -51,21 +51,28 @@ const Dashboard = async () => {
                 Berita Terkini
               </h2>
             </div>
-            <div className="grid grid-cols-2 gap-4">
-              {newsDetail.map((news, index) => (
-                <div key={index} className="bg-pips-500 rounded-xl p-4">
-                  <h3 className="font-bold text-lg text-pips-100 mb-2">
-                    {news.title}
-                  </h3>
-                  <p className="text-sm text-white mb-2">
-                    {news.description}
-                  </p>
-                  <p className="text-xs text-pips-200">
-                    Published on {news.date}
-                  </p>
-                  <a href={news.link} className="text-xs text-green-500 font-semibold">Read more</a>
-                </div>
-              ))}
+            <div className="h-[55vh] overflow-y-scroll">
+              <div className="grid grid-cols-2 gap-4">
+                {newsDetail.map((news, index) => (
+                  <div key={index} className="bg-pips-500 rounded-xl p-4">
+                    <h3 className="font-bold text-lg text-pips-100 mb-2">
+                      {news.title}
+                    </h3>
+                    <p className="text-sm text-white mb-2">
+                      {news.description}
+                    </p>
+                    <p className="text-xs text-pips-200">
+                      Published on {news.date}
+                    </p>
+                    <a
+                      href={news.link}
+                      className="text-xs text-green-500 font-semibold"
+                    >
+                      Read more
+                    </a>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
