@@ -4,6 +4,7 @@ import { doc, getDoc } from "firebase/firestore";
 import React from "react";
 import ProfileCard from "./ProfileCard";
 import { db } from "@/lib/db";
+import PhotoUploadForm from "./UploadImgCard";
 
 const ProfileSettings = async () => {
   const session = await getSession();
@@ -23,8 +24,9 @@ const ProfileSettings = async () => {
     const linkedin = user.linkedin;
     const idline = user.idline;
     return (
-      <div className="flex flex-col items-start p-8 w-1/2 h-full fixed right-0 bg-[#F1EB99]">
+      <div className="flex flex-col items-start p-8 w-1/2 overflow-y-scroll h-[91vh] absolute right-0 bg-[#F1EB99]">
         <SettingsNavbar page="profile" />
+        <PhotoUploadForm currentPhotoURL={user.image}></PhotoUploadForm>
         <ProfileCard
           initialFullname={fullName}
           initialNickname={nickName}
