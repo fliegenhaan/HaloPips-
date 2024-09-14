@@ -1,13 +1,11 @@
 import React from "react";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { getSession } from "@/lib/getSession";
 import db from "@/lib/db";
 import ChatNav from "@/components/chat/chatNav";
 import Close from "./close";
 import ChatRoom from "@/components/chat/chatRoom";
 import SendMessage from "@/components/chat/sendMessage";
-import { ScrollArea } from "@radix-ui/react-scroll-area";
-import NavBar from "@/components/navbar/NavBar";
 
 interface Props {
   id: string;

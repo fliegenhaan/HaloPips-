@@ -52,7 +52,7 @@ const Chat = async () => {
   const friendList = await getData();
   return (
     <div className="flex h-full justify-between">
-      <div className="w-5/12 border-r-4 border-pips-600">
+      <div className="w-5/12 border-r-4 h-full border-pips-600">
         <ChatNav friendList={friendList} currentId={null}></ChatNav>
       </div>{" "}
     </div>

@@ -2,7 +2,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import db from "@/lib/db";
-import { ScrollArea } from "../ui/scroll-area";
 
 interface MessagesProps {
   senderId: string;
@@ -48,7 +47,7 @@ const ChatRoom = (chat: {
     <div className="grow w-full overflow-y-scroll">
       <div className="w-full max-w-full h-full">
         {messagesContentList.map((message, index) => (
-          <div>
+          <div key={index}>
             {message.senderId === userId ? (
               <div className="w-full p-2 h-fit flex justify-end" key={index}>
                 <div className="bg-pips-400 w-auto p-2 rounded-2xl shadow-xl break-words max-w-3/4">
