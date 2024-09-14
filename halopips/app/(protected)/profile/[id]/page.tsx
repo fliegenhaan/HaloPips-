@@ -2,9 +2,9 @@ import React from "react";
 import BioData from "@/components/card/biodata";
 import { doc, getDoc } from "firebase/firestore";
 import { getSession } from "@/lib/getSession";
-
 import { db } from "@/lib/db";
 import SendMessageRequest from "@/components/card/sendMessageRequest";
+import ReviewForm from "./ReviewForm";
 
 interface Props {
   id: string;
@@ -21,6 +21,7 @@ interface Props {
   idline: string;
   linkedin: string;
   instagram: string;
+  review: string[];
 }
 //Profile {params.id}
 
@@ -53,6 +54,7 @@ async function getData(id: string): Promise<Props> {
       idline: user.idline,
       linkedin: user.linkedin,
       instagram: user.instagram,
+      review: user.review,
     };
   } else {
     return {
@@ -70,6 +72,7 @@ async function getData(id: string): Promise<Props> {
       idline: "",
       linkedin: "",
       instagram: "",
+      review: [],
     };
   }
 }
@@ -85,7 +88,8 @@ const Profile = async ({ params }: { params: { id: string } }) => {
           <div className="flex justify-center items-center w-1/2 border-r-4 border-pips-600">
             <BioData data={data}></BioData>
           </div>
-          <div className="flex justify-center items-center w-1/2">
+          <div className="flex flex-col justify-center items-center w-1/2">
+            <ReviewForm id={params.id}/>
             <SendMessageRequest
               sender={userId}
               receiver={params.id}
