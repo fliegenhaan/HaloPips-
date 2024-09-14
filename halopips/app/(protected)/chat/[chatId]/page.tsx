@@ -6,6 +6,8 @@ import ChatNav from "@/components/chat/chatNav";
 import Close from "./close";
 import ChatRoom from "@/components/chat/chatRoom";
 import SendMessage from "@/components/chat/sendMessage";
+import { ScrollArea } from "@radix-ui/react-scroll-area";
+import NavBar from "@/components/navbar/NavBar";
 
 interface Props {
   id: string;
@@ -89,14 +91,12 @@ const Chatroom = async ({ params }: { params: { chatId: string } }) => {
       messages = [];
     }
     const receiverData = await getUserData(params.chatId);
-    console.log(messages[0].time);
-
     return (
-      <div className="flex h-full justify-between">
-        <div className="w-5/12 border-r-4 border-pips-600">
+      <div className="w-full h-full flex justify-between">
+        <div className="w-5/12 shrink-0 border-r-4 border-pips-600">
           <ChatNav friendList={friendList}></ChatNav>
         </div>
-        <div className="w-7/12 flex flex-col justify-between">
+        <div className="w-7/12 flex flex-col justify-between shrink-0">
           <div className="p-5 flex justify-between h-fit w-full bg-pips-500">
             <div className="text-pips-100 text-3xl font-bold">
               {receiverData.fullName}
@@ -105,8 +105,13 @@ const Chatroom = async ({ params }: { params: { chatId: string } }) => {
               <Close></Close>
             </div>
           </div>
-          <ChatRoom messages={messages} chatId={chatId}></ChatRoom>
-          <div className="h-14 bg-pips-600 p-3">
+          <ChatRoom
+            messages={messages}
+            chatId={chatId}
+            userId={sessionId}
+          ></ChatRoom>
+
+          <div className="bg-pips-600 h-fit w-full p-2">
             <SendMessage sessionId={sessionId} chatId={chatId}></SendMessage>
           </div>
         </div>

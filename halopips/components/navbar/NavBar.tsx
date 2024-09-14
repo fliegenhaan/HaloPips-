@@ -17,7 +17,7 @@ import { redirect } from "next/navigation";
 
 const NavBar = () => {
   return (
-    <div className="flex p-4 bg-pips-600 text-pips-200">
+    <div className="flex h-full p-4 bg-pips-600 text-pips-200">
       <Sheet key={"left"}>
         <SheetTrigger asChild>
           <Button

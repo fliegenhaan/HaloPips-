@@ -9,25 +9,23 @@ export async function sendMessage(
   senderId: string,
   chatId: string
 ) {
-  console.log(values.content);
   const content = values.content;
   const docRef = doc(db, "chat", chatId);
+  const time = new Date();
+  const timeString = time.toString();
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     const chat = docSnap.data();
     const messages = chat.messages;
-    console.log(messages);
     messages.push({
       senderId,
       content,
-      time: new Date(),
+      time: timeString,
       read: false,
     });
-    console.log("message console: ", messages);
     const chatDocRef = doc(db, "chat", chatId);
     await updateDoc(chatDocRef, { messages });
   } else {
-    console.log("dia ke sini");
     return null;
   }
 }

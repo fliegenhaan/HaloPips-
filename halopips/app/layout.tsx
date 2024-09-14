@@ -27,11 +27,13 @@ export default async function RootLayout({
       <html lang="en">
         <body className={poppins.variable}>
           <div
-            className="flex flex-col h-screen bg-cover bg-center"
+            className="h-screen bg-cover bg-center"
             style={{ backgroundImage: `url(/images/background2.jpg)` }}
           >
-            <NavBar />
-            {children}
+            <div className="h-[9vh]">
+              <NavBar />
+            </div>
+            <div className="h-[91vh]">{children}</div>
           </div>
         </body>
       </html>

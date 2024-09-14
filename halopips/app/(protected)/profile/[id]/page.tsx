@@ -1,9 +1,10 @@
 import React from "react";
 import BioData from "@/components/card/biodata";
 import { doc, getDoc } from "firebase/firestore";
+import { getSession } from "@/lib/getSession";
+
 import db from "@/lib/db";
 import SendMessageRequest from "@/components/card/sendMessageRequest";
-import { getSession } from "@/lib/getSession";
 
 interface Props {
   id: string;

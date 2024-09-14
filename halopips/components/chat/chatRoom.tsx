@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import db from "@/lib/db";
+import { ScrollArea } from "../ui/scroll-area";
 
 interface MessagesProps {
   senderId: string;
@@ -9,9 +10,15 @@ interface MessagesProps {
   time: string;
   readBy: boolean;
 }
-const ChatRoom = (chat: { messages: MessagesProps[]; chatId: string }) => {
+const ChatRoom = (chat: {
+  messages: MessagesProps[];
+  chatId: string;
+  userId: string;
+}) => {
   const messagesList = chat.messages;
   const chatId = chat.chatId;
+  const userId = chat.userId;
+  const messageEndRef = useRef<null | HTMLDivElement>(null);
   const [messagesContentList, setMessagesContentList] = useState(messagesList);
   useEffect(() => {
     if (!chatId) return;
@@ -33,16 +40,36 @@ const ChatRoom = (chat: { messages: MessagesProps[]; chatId: string }) => {
     return () => unsubscribe();
   }, [chatId]);
 
+  useEffect(() => {
+    messageEndRef.current?.scrollIntoView();
+  }, [messagesContentList]);
+
   return (
-    <div className="bg-opacity-70 h-3 grow">
-      {messagesContentList.map((message, index) => (
-        <div
-          className="w-full h-10 border-b border-pips-600 hover:cursor-pointer"
-          key={index}
-        >
-          <p>{message.content}</p>
-        </div>
-      ))}
+    <div className="grow w-full overflow-y-scroll">
+      <div className="w-full max-w-full h-full">
+        {messagesContentList.map((message, index) => (
+          <div>
+            {message.senderId === userId ? (
+              <div className="w-full p-2 h-fit flex justify-end" key={index}>
+                <div className="bg-pips-400 w-auto p-2 rounded-2xl shadow-xl break-words max-w-3/4">
+                  <p>{message.content}</p>
+                  <small className="text-gray-700">
+                    {new Date(message.time).toLocaleString()}
+                  </small>
+                </div>
+              </div>
+            ) : (
+              <div className="w-full p-2 h-fit" key={index}>
+                <div className="bg-pips-300 w-fit p-2 rounded-2xl shadow-xl break-words max-w-3/4">
+                  <p>{message.content}</p>
+                  <small>{new Date(message.time).toLocaleString()}</small>
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+        <div ref={messageEndRef} />
+      </div>
     </div>
   );
 };
