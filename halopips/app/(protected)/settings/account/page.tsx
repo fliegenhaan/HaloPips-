@@ -16,12 +16,11 @@ const AccountSettingsPage = async () => {
   if (docSnap.exists()) {
     const user = docSnap.data();
     const email = user.email;
-    const password = user.password;
     return (
       <div className="flex flex-col items-start p-8 w-1/2 h-full fixed right-0 bg-[#F1EB99]">
         <SettingsNavbar page="account" />
         <EmailChangeForm initialEmail={email} />
-        <PasswordChangeForm initialPassword={password} />
+        <PasswordChangeForm />
       </div>
     );
   } else {

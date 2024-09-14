@@ -19,21 +19,21 @@ const ProfileSettings = async () => {
     const nickName = user.nickName;
     const nim = user.nim;
     const fakultas = user.fakultas;
-    const role = user.role;
     const instagram = user.instagram;
     const linkedin = user.linkedin;
     const idline = user.idline;
     return (
       <div className="flex flex-col items-start p-8 w-1/2 h-full fixed right-0 bg-[#F1EB99]">
         <SettingsNavbar page="profile" />
-        <ProfileCard 
-        initialFullname={fullName} 
-        initialNickname={nickName} 
-        initialNim={nim} 
-        initialFakultas={fakultas} 
-        initialInstagram={instagram} 
-        initialLinkedin={linkedin} 
-        initialIdline={idline}  />
+        <ProfileCard
+          initialFullname={fullName}
+          initialNickname={nickName}
+          initialNim={nim}
+          initialFakultas={fakultas}
+          initialInstagram={instagram}
+          initialLinkedin={linkedin}
+          initialIdline={idline}
+        />
       </div>
     );
   } else {

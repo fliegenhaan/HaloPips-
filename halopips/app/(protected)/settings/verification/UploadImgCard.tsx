@@ -1,10 +1,11 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { uploadImage } from "@/action/user";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 const PhotoUploadForm = ({ currentPhotoURL }: { currentPhotoURL: string }) => {
   const [message, setMessage] = useState("");
@@ -41,10 +42,18 @@ const PhotoUploadForm = ({ currentPhotoURL }: { currentPhotoURL: string }) => {
   return (
     <div className="p-2">
       <div className="flex flex-col pb-4">
-        <h2 className="font-bold text-pips-500 text-2xl">Update Profile Photo</h2>
+        <h2 className="font-bold text-pips-500 text-2xl">
+          Update Profile Photo
+        </h2>
         <div className="p-2 border bg-white w-80 h-80 rounded-lg mt-2">
           {previewURL && (
-            <img src={previewURL} alt="Profile" className="w-full h-full object-cover rounded-lg" />
+            <Image
+              src={previewURL}
+              alt="Profile"
+              height={320}
+              width={320}
+              className="w-full h-full object-cover rounded-lg"
+            />
           )}
         </div>
       </div>
@@ -61,10 +70,12 @@ const PhotoUploadForm = ({ currentPhotoURL }: { currentPhotoURL: string }) => {
           onChange={handleFileChange}
           required
         />
-        <Button type="submit" className="mt-4">Upload Photo</Button>
+        <Button type="submit" className="mt-4">
+          Upload Photo
+        </Button>
       </form>
       {message && (
-        <p className={`mt-4 ${isError ? 'text-red-500' : 'text-green-500'}`}>
+        <p className={`mt-4 ${isError ? "text-red-500" : "text-green-500"}`}>
           {message}
         </p>
       )}

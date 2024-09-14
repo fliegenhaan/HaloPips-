@@ -16,7 +16,13 @@ import { CredentialsSignin } from "next-auth";
 import { signIn, signOut } from "@/auth";
 import { nanoid } from "nanoid";
 import { getSession } from "@/lib/getSession";
-import { getStorage, ref, uploadBytes, getDownloadURL, StorageReference } from "firebase/storage";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  StorageReference,
+} from "firebase/storage";
 
 const login = async (formData: FormData) => {
   const email = formData.get("email") as string;
@@ -51,7 +57,7 @@ const register = async (formData: FormData) => {
   const q = query(collection(db, "user"), where("email", "==", email));
   const querySnapshot = await getDocs(q);
   let count = 0;
-  querySnapshot.forEach((doc) => {
+  querySnapshot.forEach(() => {
     count += 1;
   });
   if (count) {
@@ -108,14 +114,13 @@ const updateEmail = async (formData: FormData) => {
   }
 };
 
-
 const updatePassword = async (formData: FormData) => {
   const inputOldPassword = formData.get("oldpassword") as string;
   const newPassword = formData.get("newpassword") as string;
 
   if (!newPassword || !inputOldPassword) {
     throw new Error("Please fill the password field");
-  };
+  }
 
   if (inputOldPassword === newPassword) {
     throw new Error("Please enter a different password");
@@ -124,28 +129,38 @@ const updatePassword = async (formData: FormData) => {
   const session = await getSession();
   const id = session?.user.id;
 
-  try {
-    const userDocRef = doc(db, "user", id);
-    const docSnap = await getDoc(userDocRef);
-    const userdata = docSnap.data()
-    const oldPassword = userdata.password;
-    const isMatched = await compare(inputOldPassword, oldPassword);
+  if (id) {
+    try {
+      const userDocRef = doc(db, "user", id);
+      const docSnap = await getDoc(userDocRef);
+      if (docSnap.exists()) {
+        const userdata = docSnap.data();
+        const oldPassword = userdata.password;
+        const isMatched = await compare(inputOldPassword, oldPassword);
 
-    if (!isMatched) {
-      return {success: false, message: "Please input your current password correctly"};
-    } else {
-        const hashedPassword = await hash(newPassword, 12);
+        if (!isMatched) {
+          return {
+            success: false,
+            message: "Please input your current password correctly",
+          };
+        } else {
+          const hashedPassword = await hash(newPassword, 12);
 
-        await updateDoc(userDocRef, {
-          password: hashedPassword,
-        });
+          await updateDoc(userDocRef, {
+            password: hashedPassword,
+          });
 
-        return {success: true, message: "Password updated successfully"};
+          return { success: true, message: "Password updated successfully" };
+        }
+      } else {
+        throw new Error("Failed to get docs");
+      }
+    } catch (error) {
+      console.error("Error updating password:", error);
+      throw new Error("Failed to update password. Please try again.");
     }
-
-  } catch (error) {
-    console.error("Error updating password:", error);
-    throw new Error("Failed to update password. Please try again.");
+  } else {
+    throw new Error("Not signed in");
   }
 };
 
@@ -160,6 +175,9 @@ const updateProfile = async (formData: FormData) => {
 
   const session = await getSession();
   const id = session?.user.id;
+  if (!id) {
+    throw new Error("Not signed in");
+  }
 
   try {
     const userDocRef = doc(db, "user", id);
@@ -189,9 +207,12 @@ const uploadImage = async (formData: FormData) => {
 
   const session = await getSession();
   const id = session?.user.id;
-
+  if (!id) throw new Error("Not signed in");
   try {
-    const storageRef: StorageReference = ref(storage, `user_photos/${id}/${image.name}`);
+    const storageRef: StorageReference = ref(
+      storage,
+      `user_photos/${id}/${image.name}`
+    );
     await uploadBytes(storageRef, image);
 
     const photoURL = await getDownloadURL(storageRef);
@@ -202,14 +223,11 @@ const uploadImage = async (formData: FormData) => {
     });
 
     return { success: true, message: "Photo uploaded successfully", photoURL };
-    
   } catch (error) {
     console.error("Error uploading photo:", error);
     throw new Error("Failed to upload photo. Please try again.");
   }
-
-
-}
+};
 
 const logout = async () => {
   if (!login) {
@@ -223,4 +241,13 @@ const signInGoogle = async () => {
   await signIn("google");
 };
 
-export { register, login, logout, signInGoogle, updateEmail, updatePassword, updateProfile, uploadImage };
+export {
+  register,
+  login,
+  logout,
+  signInGoogle,
+  updateEmail,
+  updatePassword,
+  updateProfile,
+  uploadImage,
+};
