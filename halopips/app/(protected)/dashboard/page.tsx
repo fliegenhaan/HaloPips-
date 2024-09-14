@@ -1,55 +1,9 @@
-// import db from "@/lib/db";
-// import { getSession } from "@/lib/getSession";
-// import { doc, getDoc } from "firebase/firestore";
-// import React from "react";
-// import DashboardProfile from "./DashboardProfile";
-
-// const Dashboard = async () => {
-//   const session = await getSession();
-//   const id = session?.user.id;
-//   if (!id) {
-//     return;
-//   }
-//   const docRef = doc(db, "user", id);
-//   const docSnap = await getDoc(docRef);
-//   if (docSnap.exists()) {
-//     const user = docSnap.data();
-//     const fullName = user.fullName;
-//     const nickName = user.nickName;
-//     const nim = user.nim;
-//     const image = user.image;
-//     return (
-//       <div>
-//         <h1 className="text-pips-600 font-bold text-4xl pl-16 pt-6">Selamat Datang, </h1>
-//         <div className="flex flex-row w-1/2">
-//           <div className="flex flex-col">
-//             <DashboardProfile fullName={fullName} nickName={nickName} nim={nim} image={image}/>
-//           </div>
-//           <div className="flex flex-col">
-//             <div className="flex flex-row p-2">
-//               <div className="bg-pips-400 w-4 h-8 mr-1">
-//               </div>
-//               <div className="bg-pips-600 text-pips-100 text-l font-bold py-1 pl-2 w-96">
-//                 Berita Terkini
-//               </div>
-//             </div>
-//             <div className="flex flex-col bg-pips-400 rounded-xl p-2">
-//               <h2 className="text-pips-100 font-bold text-l">Arak-arakan Wisuda</h2>
-//               <p className="text-pips-200">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem obcaecati cumque eaque ipsa nobis unde, doloremque nihil ratione veniam illum amet ut minima recusandae repellat porro laudantium nisi quisquam officia.</p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     )
-//   }
-// };
-
-// export default Dashboard;
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/getSession";
 import { doc, getDoc } from "firebase/firestore";
 import React from "react";
 import DashboardProfile from "./DashboardProfile";
+import newsDetail from "@/app/assets/news";
 
 const Dashboard = async () => {
   const session = await getSession();
@@ -98,17 +52,18 @@ const Dashboard = async () => {
               </h2>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              {[...Array(6)].map((_, index) => (
-                <div key={index} className="bg-pips-600 rounded-xl p-4">
+              {newsDetail.map((news, index) => (
+                <div key={index} className="bg-pips-500 rounded-xl p-4">
                   <h3 className="font-bold text-lg text-pips-100 mb-2">
-                    Arak-arakan Wisuda
+                    {news.title}
                   </h3>
                   <p className="text-sm text-white mb-2">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                    {news.description}
                   </p>
                   <p className="text-xs text-pips-200">
-                    Published on April 15, 2024
+                    Published on {news.date}
                   </p>
+                  <a href={news.link} className="text-xs text-green-500 font-semibold">Read more</a>
                 </div>
               ))}
             </div>
