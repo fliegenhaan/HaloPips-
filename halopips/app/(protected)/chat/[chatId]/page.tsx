@@ -94,7 +94,7 @@ const Chatroom = async ({ params }: { params: { chatId: string } }) => {
     return (
       <div className="w-full h-full flex justify-between">
         <div className="w-5/12 shrink-0 border-r-4 border-pips-600">
-          <ChatNav friendList={friendList}></ChatNav>
+          <ChatNav friendList={friendList} currentId={params.chatId}></ChatNav>
         </div>
         <div className="w-7/12 flex flex-col justify-between shrink-0">
           <div className="p-5 flex justify-between h-fit w-full bg-pips-500">

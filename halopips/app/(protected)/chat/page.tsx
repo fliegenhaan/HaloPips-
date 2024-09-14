@@ -53,7 +53,7 @@ const Chat = async () => {
   return (
     <div className="flex h-full justify-between">
       <div className="w-5/12 border-r-4 border-pips-600">
-        <ChatNav friendList={friendList}></ChatNav>
+        <ChatNav friendList={friendList} currentId={null}></ChatNav>
       </div>{" "}
     </div>
   );
