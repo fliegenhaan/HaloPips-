@@ -191,7 +191,7 @@ export default function GalleryGrid(data: { data: Props[] }) {
                 className="absolute w-full h-full hover:cursor-pointer hover:w-24 hover:h-24 transition-all overflow-visible"
                 onClick={() => console.log(item.nickName)}
               >
-                <AvatarImage src={item.image} />
+                <AvatarImage className="rounded-full" src={item.image} />
                 <AvatarFallback className="text-3xl font-semibold text-gray-500 opacity-70">
                   {item.fallBack}
                 </AvatarFallback>
