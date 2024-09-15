@@ -1,7 +1,9 @@
 import { getSession } from "@/lib/getSession";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/db";
+import { MdEdit } from "react-icons/md";
 import BioData from "@/components/card/biodata";
+import Link from "next/link";
 
 interface Props {
   id: string;
@@ -80,6 +82,11 @@ const MyProfile = async () => {
         <div className="flex h-full justify-between">
           <div className="flex justify-center items-center w-1/2 border-r-4 border-pips-600">
             <BioData data={mydata}></BioData>
+            <div className="EditButton bg-pips-600 m-2 w-10 h-10 rounded-sm flex items-center justify-center text-pips-100 text-4xl text-center">
+              <Link href="/settings/profile">
+                <MdEdit />
+              </Link>
+            </div>
           </div>
           <div className="flex justify-center w-1/2">
             
