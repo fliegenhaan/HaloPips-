@@ -40,7 +40,6 @@ const FormLogin = () => {
           Login
         </Button>
       </form>
-      <p className="text-pips-600">or</p>
       <p className="text-pips-600 text-sm mt-2">
         Don&apos;t have an account?
         <Link href="/register" className="text-pips-300">
