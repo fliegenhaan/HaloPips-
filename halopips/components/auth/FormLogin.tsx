@@ -3,8 +3,7 @@ import React from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { login, signInGoogle } from "@/action/user";
-import { IconBrandGoogle } from "@tabler/icons-react";
+import { login } from "@/action/user";
 import { Button } from "../ui/button";
 
 const FormLogin = () => {
