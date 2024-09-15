@@ -21,7 +21,7 @@ const SendMessage = (id: { sessionId: string; chatId: string }) => {
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
-    sendMessage(values, id.sessionId, id.chatId);
+    sendMessage(values, id.sessionId, id.chatId).then(() => form.reset());
   }
   return (
     <Form {...form}>
