@@ -1,53 +1,9 @@
-import NextAuth, { CredentialsSignin } from "next-auth";
-import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
-import { compare } from "bcryptjs";
-import { setDoc, doc } from "firebase/firestore";
+import NextAuth from "next-auth";
+import authConfig from "./auth.config";
+import { setDoc, doc, getDoc } from "firebase/firestore";
 import { db } from "./lib/db";
 import { getUserByEmail } from "./data";
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID, // nanti dimasukin client idnya di .env
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET, //nanti dimasukkin di .env juga
-    }),
-
-    Credentials({
-      name: "Credentials",
-
-      credentials: {
-        email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" },
-      },
-
-      authorize: async (credentials) => {
-        const email = credentials.email as string | undefined;
-        const password = credentials.password as string | undefined;
-
-        if (!email || !password) {
-          throw new CredentialsSignin("Please provide both email & password");
-        }
-        const user = await getUserByEmail(email);
-        if (!user || !user.data()) {
-          throw new Error("Invalid email or password");
-        }
-        const isMatched = await compare(password, user.data().password);
-
-        if (!isMatched) {
-          throw new Error("Password did not matched");
-        }
-        const userData = user.data(); // Get the plain object data
-        return {
-          firstName: userData.firstName,
-          lastName: userData.lastName,
-          email: userData.email,
-          role: userData.role,
-          id: user.id,
-        };
-      },
-    }),
-  ],
-
   pages: {
     signIn: "/login",
   },
@@ -56,7 +12,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async session({ session, token }) {
       if (token?.sub && token?.role) {
         session.user.id = token.sub;
-        session.user.role = token.role as "user";
+        session.user.role = token.role as "tpb" | "hmif" | "admin";
       }
 
       return session;
@@ -65,7 +21,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     async jwt({ token, user }) {
       if (!token.sub) return token;
       if (user) {
-        token.role = "user";
+        const id = token.sub;
+        const userDocRef = doc(db, "user", id);
+        const docSnap = await getDoc(userDocRef);
+        if (docSnap.exists()) {
+          const userdata = docSnap.data();
+          token.role = userdata.role;
+        } else {
+          return token;
+        }
       }
       return token;
     },
@@ -85,7 +49,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 authProviderId: id,
               });
             }
-            // await User.create({ email, name, image, authProviderId: id });
           } else {
             return true;
           }
@@ -101,4 +64,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       }
     },
   },
+  session: { strategy: "jwt" },
+  ...authConfig,
 });

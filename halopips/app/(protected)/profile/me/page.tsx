@@ -1,10 +1,9 @@
 import { getSession } from "@/lib/getSession";
 import { doc, getDoc } from "firebase/firestore";
 import { db } from "@/lib/db";
-import { MdEdit } from "react-icons/md";
 import BioData from "@/components/card/biodata";
 import Link from "next/link";
-
+import Image from "next/image";
 interface Props {
   id: string;
   fullName: string;
@@ -84,13 +83,16 @@ const MyProfile = async () => {
             <BioData data={mydata}></BioData>
             <div className="EditButton bg-pips-600 m-2 w-10 h-10 rounded-sm flex items-center justify-center text-pips-100 text-4xl text-center">
               <Link href="/settings/profile">
-                <MdEdit />
+                <Image
+                  src="/images/edit.png"
+                  alt="edit"
+                  height={40}
+                  width={40}
+                ></Image>
               </Link>
             </div>
           </div>
-          <div className="flex justify-center w-1/2">
-            
-          </div>
+          <div className="flex justify-center w-1/2"></div>
         </div>
       );
     }
