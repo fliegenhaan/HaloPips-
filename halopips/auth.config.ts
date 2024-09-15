@@ -1,16 +1,10 @@
 import { CredentialsSignin, type NextAuthConfig } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import Google from "next-auth/providers/google";
 import { compare } from "bcryptjs";
 import { getUserByEmail } from "./data";
 
 export default {
   providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID, // nanti dimasukin client idnya di .env
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET, //nanti dimasukkin di .env juga
-    }),
-
     Credentials({
       name: "Credentials",
 
