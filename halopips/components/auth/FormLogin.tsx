@@ -42,22 +42,13 @@ const FormLogin = () => {
         </Button>
       </form>
       <p className="text-pips-600">or</p>
-      <form className="w-full m-0" action={signInGoogle}>
-        <Button
-          variant="outline"
-          type="submit"
-          className="border-pips-600 bg-transparent w-full hover:bg-pips-600 hover:text-[#F1EB99]"
-        >
-          <IconBrandGoogle className="w-4 h-4 text-inherit mr-2" />
-          <span className="text-inherit text-lg">Google</span>
-        </Button>
-        <p className="text-pips-600 text-sm mt-2">
-          Don&apos;t have an account?
-          <Link href="/register" className="text-pips-300">
-            Sign up
-          </Link>
-        </p>
-      </form>
+      <p className="text-pips-600 text-sm mt-2">
+        Don&apos;t have an account?
+        <Link href="/register" className="text-pips-300">
+          Sign up
+        </Link>
+      </p>
+      
     </div>
   );
 };

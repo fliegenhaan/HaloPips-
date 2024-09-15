@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import React from "react";
 import { getSession } from "@/lib/getSession";
+import FormLogin from "@/components/auth/FormLogin";
 import AuthNav from "@/components/auth/AuthNav";
 import Image from "next/image";
 const Login = async () => {
@@ -20,6 +21,7 @@ const Login = async () => {
         width={160}
         height={160}
       ></Image>
+      <FormLogin></FormLogin>
       <AuthNav page={"login"}></AuthNav>
     </div>
   );
